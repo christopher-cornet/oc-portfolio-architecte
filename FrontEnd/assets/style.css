@@ -112,10 +112,40 @@ li:hover {
 }
 
 #introduction article {
-	flex: 1
+	flex: 1;
+	max-width: 380px;
 }
 #introduction h2 {
 	margin-bottom: 1em;
+}
+
+.categories {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 50px 0px;
+}
+
+.btn {
+	border: 1px solid #1D6154;
+	border-radius: 25px;
+	padding: 5px 20px;
+	background-color: #fff;
+	font-family: 'Syne';
+	margin-inline: 5px;
+	color: #1D6154;
+	font-size: 16px;
+}
+
+.btn:hover {
+	background-color: #1D6154;
+	color: #fff;
+	cursor: pointer;
+}
+
+.btn:active {
+	background-color: #113831;
+	color: #fff;
 }
 
 #introduction p {
