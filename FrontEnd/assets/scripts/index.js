@@ -1,12 +1,20 @@
 const url = "http://localhost:5678/api/";
 
+let response_data; // Global variable to store the response data
+
+// Get all the works from the API
+let getWorks = async () => {
+    const get_work = await fetch(`${url}works`);
+    response_data = await get_work.json();
+
+    addAllWorks(0);
+}
+
 // Add all works to the gallery
 let addAllWorks = async (filter) => {
     removeAllWork(); // Remove all the precedent work
 
-    // Get all works
-    const get_work = await fetch(`${url}works`);
-    const data = await get_work.json();
+    let data = [...response_data]; // Create a copy of response_data
 
     let gallery = document.querySelector(".gallery");
 
@@ -38,8 +46,9 @@ let addAllWorks = async (filter) => {
         }
     }
     else {
+        // For each element in data (element = each object)
         data.forEach((element) => {
-            if (element.categoryId == 1 && filter == 1) {
+            if (element.categoryId == filter) {
                 // Get the image and title source
                 let imageSrc = element.imageUrl;
                 let titleSrc = element.title;
@@ -62,63 +71,13 @@ let addAllWorks = async (filter) => {
                 // Add image and title to the figure
                 figure.appendChild(image);
                 figure.appendChild(title);
-            }
-            else if (element.categoryId == 2 && filter == 2) {
-                // Get the image and title source
-                let imageSrc = element.imageUrl;
-                let titleSrc = element.title;
-
-                // Create figure, image and title
-                let figure = document.createElement("figure");
-                let image = document.createElement("img");
-                let title = document.createElement("figcaption");
-
-                // Add the attributes to the image
-                image.src = imageSrc;
-                image.alt = titleSrc;
-
-                // Add the title
-                title.innerHTML = titleSrc;
-
-                // Add figure to the gallery
-                gallery.appendChild(figure);
-
-                // Add image and title to the figure
-                figure.appendChild(image);
-                figure.appendChild(title);
-            }
-            else if (element.categoryId == 3 && filter == 3) {
-                // Get the image and title source
-                let imageSrc = element.imageUrl;
-                let titleSrc = element.title;
-
-                // Create figure, image and title
-                let figure = document.createElement("figure");
-                let image = document.createElement("img");
-                let title = document.createElement("figcaption");
-
-                // Add the attributes to the image
-                image.src = imageSrc;
-                image.alt = titleSrc;
-
-                // Add the title
-                title.innerHTML = titleSrc;
-
-                // Add figure to the gallery
-                gallery.appendChild(figure);
-
-                // Add image and title to the figure
-                figure.appendChild(image);
-                figure.appendChild(title);           
             }
         });
     }
 };
 
+// Add all the categories buttons
 let addCategories = async () => {
-    // const get_work = await fetch(`${url}categories`);
-    // const data = await get_work.json();
-
     const categories = document.querySelector(".categories");
 
     // Create the filters buttons
@@ -156,27 +115,17 @@ let removeAllWork = () => {
 
 // Filter work based on button clicked
 let filterWork = async (filter) => {
-    const get_work = await fetch(`${url}works`);
-    const data = await get_work.json();
-
-    // console.log(data);
-
     let buttons = new Set(); // Create a Set
     buttons.add(filter); // Add the filter number
 
-    // If the user don't click on the "All" button, remove all the work
-    if (filter !== 0) {
-        removeAllWork();
-    }
-
-    addAllWorks(filter);
+    addAllWorks(filter); // Add all works based on the filter
 }
 
-addCategories();
-
-addAllWorks(0);
-
 document.addEventListener("DOMContentLoaded", () => {
+    addCategories();
+    
+    getWorks();
+
     let all_buttons = document.querySelectorAll(".categories button");
 
     // Each button has an Event Listener. On click, call the filterWork function
