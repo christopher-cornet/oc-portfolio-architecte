@@ -18,6 +18,7 @@ let addAllWorks = async (filter) => {
 
     let gallery = document.querySelector(".gallery");
 
+    // If the filter is 0, add all the works
     if (filter == 0) {
         // Create all the images and captions
         for (let i = 0; i < data.length; i++) {
@@ -44,7 +45,9 @@ let addAllWorks = async (filter) => {
             figure.appendChild(image);
             figure.appendChild(title);
         }
+        changeCurrentCategory(filter);
     }
+    // If the filter is not 0, add the works based on the filter
     else {
         // For each element in data (element = each object)
         data.forEach((element) => {
@@ -73,8 +76,21 @@ let addAllWorks = async (filter) => {
                 figure.appendChild(title);
             }
         });
+        changeCurrentCategory(filter);
     }
 };
+
+// Remove each "current-btn" class from categories buttons and add it to the button clicked
+let changeCurrentCategory = (filter) => {
+    let all_buttons = document.querySelectorAll(".categories .btn");
+    
+    // Remove all "current-btn" classes from categories buttons
+    for (let index = 0; index < 4; index++) {
+        all_buttons[index].classList.remove("current-btn");
+    }
+
+    all_buttons[filter].classList.add("current-btn"); // Add the "current button" class to the clicked button
+}
 
 // Add all the categories buttons
 let addCategories = async () => {
@@ -89,6 +105,7 @@ let addCategories = async () => {
     }
 
     let all_buttons = document.querySelectorAll(".categories .btn");
+    all_buttons[0].classList.add("current-btn"); // Add the "current button" class to the first button
 
     let all_categories = [
         {"className": "all", "text": "Tous"},
@@ -104,6 +121,7 @@ let addCategories = async () => {
     });
 }
 
+ // Remove all the precedent work
 let removeAllWork = () => {
     const works = document.querySelectorAll(".gallery figure");
 

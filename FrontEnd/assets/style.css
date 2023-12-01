@@ -137,6 +137,11 @@ li:hover {
 	font-size: 16px;
 }
 
+.current-btn {
+	background-color: #1D6154;
+	color: #fff;
+}
+
 .btn:hover {
 	background-color: #1D6154;
 	color: #fff;
