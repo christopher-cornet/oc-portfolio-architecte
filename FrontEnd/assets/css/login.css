@@ -47,6 +47,9 @@ table {
 	border-spacing: 0;
 }
 /** end reset css**/
+html {
+    background-color: #FFFEF8;
+}
 body {
 	max-width: 1140px;
 	margin:auto;
@@ -98,110 +101,52 @@ nav li {
 li:hover {
 	color: #B1663C;
 }
-#introduction {
-	display: flex;
-	align-items: center;
-}
-#introduction figure {
-	flex: 1
-}
-#introduction img {
-	display: block;
-	margin: auto;
-	width: 80%;
+
+.login h2 {
+    text-align: center;
+    margin-top: 20vh;
+    margin-bottom: 35px;
 }
 
-#introduction article {
-	flex: 1;
-	max-width: 380px;
-}
-#introduction h2 {
-	margin-bottom: 1em;
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.categories {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin: 50px 0px;
+input {
+    width: 300px;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
 }
 
-.btn {
-	border: 1px solid #1D6154;
-	border-radius: 25px;
-	padding: 5px 20px;
-	background-color: #fff;
-	font-family: 'Syne';
-	margin-inline: 5px;
-	color: #1D6154;
-	font-size: 16px;
+input:focus {
+    outline: #1D6154;
+    border: 1px solid #1D6154;
 }
 
-.current-btn {
-	background-color: #1D6154;
-	color: #fff;
+label {
+    margin-right: 15px;
+    width: 300px;
+    display: inline-block;
 }
 
-.btn:hover {
-	background-color: #1D6154;
-	color: #fff;
-	cursor: pointer;
+.email, .password {
+    margin: 10px;
 }
 
-.btn:active {
-	background-color: #113831;
-	color: #fff;
+.label-password {
+    margin-top: 20px;
 }
 
-#introduction p {
-	margin-bottom: 0.5em;
-}
-#portfolio h2 {
-	text-align: center;
-	margin-bottom: 1em;
-}
-.gallery {
-	width: 100%;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-column-gap: 20px;
-	grid-row-gap: 20px;
+form a {
+    color: black;
+    text-decoration: underline;
 }
 
-.gallery img {
-	width: 100%;
-
-}
-#contact {
-	width: 50%;
-margin: auto;
-}
-#contact > * {
-	text-align: center;
-
-}
-#contact h2{
-	margin-bottom: 20px;
-}
-#contact form {
-	text-align: left;
-	margin-top:30px;
-	display: flex;
-	flex-direction: column;
-}
-
-#contact input {
-	height: 50px;
-	font-size: 1.2em;
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-}
-#contact label {
-	margin: 2em 0 1em 0;
-}
-#contact textarea {
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+.login-btn {
+    cursor: pointer;
 }
 
 input[type="submit"]{
@@ -218,6 +163,14 @@ input[type="submit"]{
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	margin: 2em;
+    margin-right: 150px;
 }
 
+footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: #fff;
+    width: 100%;
+}

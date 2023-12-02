@@ -107,6 +107,7 @@ let addCategories = async () => {
     let all_buttons = document.querySelectorAll(".categories .btn");
     all_buttons[0].classList.add("current-btn"); // Add the "current button" class to the first button
 
+    // Create an array with all the categories class names and texts
     let all_categories = [
         {"className": "all", "text": "Tous"},
         {"className": "objects", "text": "Objets"},
