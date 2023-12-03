@@ -149,6 +149,10 @@ form a {
     cursor: pointer;
 }
 
+.error {
+	margin-top: 50px;
+}
+
 input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
