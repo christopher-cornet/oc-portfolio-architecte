@@ -35,7 +35,7 @@ let addAllWorks = async (filter) => {
             image.src = imageSrc;
             image.alt = titleSrc;
 
-            // Add the title
+            // Add the titles
             title.innerHTML = titleSrc;
 
             // Add figure to the gallery
@@ -45,7 +45,6 @@ let addAllWorks = async (filter) => {
             figure.appendChild(image);
             figure.appendChild(title);
         }
-        changeCurrentCategory(filter);
     }
     // If the filter is not 0, add the works based on the filter
     else {
@@ -76,8 +75,8 @@ let addAllWorks = async (filter) => {
                 figure.appendChild(title);
             }
         });
-        changeCurrentCategory(filter);
     }
+    changeCurrentCategory(filter);
 };
 
 // Remove each "current-btn" class from categories buttons and add it to the button clicked
@@ -132,12 +131,44 @@ let removeAllWork = () => {
     }
 }
 
-// Filter work based on button clicked
-let filterWork = async (filter) => {
-    let buttons = new Set(); // Create a Set
-    buttons.add(filter); // Add the filter number
+// Check if the user is logged
+let userLogged = () => {
+    const token = window.localStorage.getItem("token");
 
-    addAllWorks(filter); // Add all works based on the filter
+    // If the user is logged, change the UI
+    if (token != "") {
+        console.log(2);
+
+        // Add the edit mode header
+        let edition_block = document.querySelector(".edition_block");
+        edition_block.classList.add("logged");
+
+        let header_img = document.createElement("img");
+        header_img.src = "assets/images/edit_mode.svg";
+
+        edition_block.appendChild(header_img);
+
+        // Change "login" button to "logout"
+        document.querySelectorAll("header ul li")[2].innerHTML = "logout";
+
+        document.querySelector(".categories").remove(); // Remove the categories buttons
+
+        let edit_icon = document.createElement("img");
+        edit_icon.src = "assets/images/modify.svg";
+
+        let edit_btn = document.querySelector(".edit-btn")
+        edit_btn.appendChild(edit_icon);
+
+        let modify = document.createElement("p");
+        modify.innerHTML = "Modifier";
+
+        edit_btn.appendChild(modify);
+
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -145,13 +176,15 @@ document.addEventListener("DOMContentLoaded", () => {
     
     getWorks();
 
+    userLogged();
+
     let all_buttons = document.querySelectorAll(".categories button");
 
     // Each button has an Event Listener. On click, call the filterWork function
     for (let index = 0; index < all_buttons.length; index++) {
         // Add an event listener on all buttons
         all_buttons[index].addEventListener("click", () => {
-            filterWork(index); // Give a number (0, 1, 2, or 3) in parameter
+            addAllWorks(index); // Give a number (0, 1, 2, or 3) in parameter
         });
     }
 });

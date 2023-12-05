@@ -7,7 +7,7 @@ let loginUser = async () => {
     const password = document.getElementById("password").value;
 
     // Call API to login user with email and password informations
-    let get_login = await fetch(url, {
+    let login = await fetch(url, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -18,7 +18,7 @@ let loginUser = async () => {
         })
     });
 
-    let data = await get_login.json();
+    let data = await login.json();
     
     // If token is not undefined, redirect to home page with edit
     if (data.token != undefined) {

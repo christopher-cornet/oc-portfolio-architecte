@@ -97,6 +97,9 @@ nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
 }
+nav li:nth-child(3) {
+	font-weight: bold;
+}
 
 li:hover {
 	color: #B1663C;
