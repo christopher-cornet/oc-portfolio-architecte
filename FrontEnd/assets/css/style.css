@@ -158,6 +158,10 @@ li:hover {
 	color: #fff;
 }
 
+.edition_block {
+	margin-bottom: 50px;
+}
+
 .edition_block.logged {
 	margin: 0;
 	margin-bottom: 50px;

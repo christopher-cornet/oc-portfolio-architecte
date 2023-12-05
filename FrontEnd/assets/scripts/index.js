@@ -134,31 +134,34 @@ let removeAllWork = () => {
 // Check if the user is logged
 let userLogged = () => {
     const token = window.localStorage.getItem("token");
+    // window.localStorage.removeItem("token");
 
     // If the user is logged, change the UI
     if (token != "") {
-        console.log(2);
-
         // Add the edit mode header
         let edition_block = document.querySelector(".edition_block");
         edition_block.classList.add("logged");
 
+        // Add image to the header
         let header_img = document.createElement("img");
         header_img.src = "assets/images/edit_mode.svg";
-
         edition_block.appendChild(header_img);
 
         // Change "login" button to "logout"
         document.querySelectorAll("header ul li")[2].innerHTML = "logout";
 
-        document.querySelector(".categories").remove(); // Remove the categories buttons
+        // Remove the categories container
+        document.querySelector(".categories").remove();
 
+        // Edit icon
         let edit_icon = document.createElement("img");
         edit_icon.src = "assets/images/modify.svg";
 
+        // Edit button
         let edit_btn = document.querySelector(".edit-btn")
         edit_btn.appendChild(edit_icon);
 
+        // Modify paragraph
         let modify = document.createElement("p");
         modify.innerHTML = "Modifier";
 
