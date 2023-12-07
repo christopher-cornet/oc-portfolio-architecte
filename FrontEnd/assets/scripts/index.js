@@ -136,7 +136,7 @@ let userLogged = () => {
     const token = window.localStorage.getItem("token");
     // window.localStorage.removeItem("token");
 
-    // If the user is logged, change the UI
+    // If the user is logged, change the UI to edit mode
     if (token != "") {
         // Add the edit mode header
         let edition_block = document.querySelector(".edition_block");
@@ -174,14 +174,35 @@ let userLogged = () => {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    addCategories();
+// Show modal or not depending on parameter passed in function calls
+let modalState = (state) => {
+    let modal = document.querySelector(".modal");
+    let modalGallery = document.querySelector(".modal_gallery");
     
-    getWorks();
+    modal.style.display = state;
+    modalGallery.style.display = state;
+}
 
+document.addEventListener("DOMContentLoaded", () => {
+
+    window.addEventListener('scroll', () => {
+        // If the user scrolls the page, the modal background still displays completely
+        if (window.scrollY > 0) {
+            let modal = document.querySelector(".modal");
+            modal.style.top = "0px"; // Position the background of the modal at the very top
+        }
+    });
+
+    addCategories();
+    getWorks();
     userLogged();
 
     let all_buttons = document.querySelectorAll(".categories button");
+
+    let editButton = document.querySelector(".edit-btn");
+
+    let modal = document.querySelector(".modal");
+    let modalGallery = document.querySelector(".modal_gallery");
 
     // Each button has an Event Listener. On click, call the filterWork function
     for (let index = 0; index < all_buttons.length; index++) {
@@ -190,4 +211,15 @@ document.addEventListener("DOMContentLoaded", () => {
             addAllWorks(index); // Give a number (0, 1, 2, or 3) in parameter
         });
     }
+
+    // Open modal on click on the edit button
+    editButton.addEventListener("click", () => {
+        modalState("block");
+    });
+
+    // Close modal if click on screen outside "modalGallery"
+    modal.addEventListener("click", () => {
+        modalState("none");
+    });
+
 });
