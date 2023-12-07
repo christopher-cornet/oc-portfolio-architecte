@@ -118,7 +118,6 @@ li:hover {
 
 #introduction article {
 	flex: 1;
-	max-width: 380px;
 }
 #introduction h2 {
 	margin-bottom: 1em;
@@ -171,6 +170,8 @@ li:hover {
 	justify-content: center;
 	align-items: center;
 	background-color: #000;
+	position: relative;
+	z-index: 2;
 }
 
 .edit-btn {
@@ -191,10 +192,10 @@ li:hover {
 	margin-bottom: 70px;
 }
 
-.open {
+.modal {
 	position: fixed;
 	display: none;
-	top: 60px; /* 60px to not cover the Edit mode header */
+	top: 0px; /* 60px to not cover the Edit mode header */
 	left: 0;
 	height: 100%;
 	width: 100%;
@@ -210,17 +211,27 @@ li:hover {
 	top: calc(50% + 60px); /* Center the modal */
 	left: 50%;
 	transform: translate(-50%, -50%);
-	height: 30vh;
-	width: 20vw;
+	height: 45vh;
+	width: 25vw;
+	border-radius: 10px;
 }
 
 .modal_gallery p {
 	text-align: center;
 	font-size: 20px;
+	margin-top: 50px;
+}
+
+.fa-xmark {
+	position: absolute;
+	right: 30px;
+	top: 30px;
+	cursor: pointer;
 }
 
 #introduction p {
 	margin-bottom: 1em;
+	max-width: 400px;
 }
 #portfolio h2 {
 	text-align: center;

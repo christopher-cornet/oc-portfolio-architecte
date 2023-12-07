@@ -174,6 +174,14 @@ let userLogged = () => {
     }
 }
 
+// Create the Modal
+let createModal = () => {
+    let body = document.querySelector("body");
+    let modal = document.createElement("div");
+    modal.classList.add("modal");
+    body.insertBefore(modal, document.body.firstChild); // Add modal as first body element
+}
+
 // Show modal or not depending on parameter passed in function calls
 let modalState = (state) => {
     let modal = document.querySelector(".modal");
@@ -185,14 +193,7 @@ let modalState = (state) => {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    window.addEventListener('scroll', () => {
-        // If the user scrolls the page, the modal background still displays completely
-        if (window.scrollY > 0) {
-            let modal = document.querySelector(".modal");
-            modal.style.top = "0px"; // Position the background of the modal at the very top
-        }
-    });
-
+    createModal();
     addCategories();
     getWorks();
     userLogged();
@@ -203,6 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let modal = document.querySelector(".modal");
     let modalGallery = document.querySelector(".modal_gallery");
+    let closeBtn = document.querySelector(".fa-xmark");
 
     // Each button has an Event Listener. On click, call the filterWork function
     for (let index = 0; index < all_buttons.length; index++) {
@@ -220,6 +222,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // Close modal if click on screen outside "modalGallery"
     modal.addEventListener("click", () => {
         modalState("none");
+    });
+
+    // Close modal
+    closeBtn.addEventListener("click", () => {
+        modalState("none");
+    });
+
+    // Click on "modalGallery"
+    modalGallery.addEventListener("click", () => {
+        console.log("click on modal");
     });
 
 });
