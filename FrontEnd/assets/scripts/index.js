@@ -176,10 +176,19 @@ let userLogged = () => {
 
 // Create the Modal
 let createModal = () => {
+    // Create the modal and append to the body
     let body = document.querySelector("body");
-    let modal = document.createElement("div");
-    modal.classList.add("modal");
-    body.insertBefore(modal, document.body.firstChild); // Add modal as first body element
+    let modal_background = document.createElement("div");
+
+    modal_background.classList.add("modal");
+    body.insertBefore(modal_background, document.body.firstChild); // Add modal as first body element
+
+    // Create a gallery and append to modal
+    let modal = document.querySelector(".modal_gallery");
+    let gallery = document.createElement("div");
+
+    gallery.classList.add("modal_works");
+    modal.appendChild(gallery);
 }
 
 // Show modal or not depending on parameter passed in function calls
@@ -189,6 +198,49 @@ let modalState = (state) => {
     
     modal.style.display = state;
     modalGallery.style.display = state;
+}
+
+// Update the gallery inside the modal
+let updateModal = async () => {
+    let modal = document.querySelector(".modal_works");
+    let modalGallery = document.querySelector(".modal_gallery");
+    let allImages = document.querySelectorAll(".modal_works figure");
+
+    // Remove all images
+    for (let index = 0; index < allImages.length; index++) {
+        allImages[index].remove(); // Reset modal content
+    }
+
+    let data = [...response_data]; // Create a copy of response_data
+
+    console.log(data);
+
+    // Update all images
+    for (let i = 0; i < data.length; i++) {
+        // Get the image and title source
+        let imageSrc = data[i].imageUrl;
+        let titleSrc = data[i].title;
+
+        // Create figure, image and title
+        let figure = document.createElement("figure");
+        let image = document.createElement("img");
+
+        // Add the attributes to the image
+        image.src = imageSrc;
+        image.alt = titleSrc;
+
+        // Add figure to the modal
+        modal.appendChild(figure);
+
+        // Add image and title to the figure
+        figure.appendChild(image);
+    }
+
+    // Add a gray line to separate the images and button
+    let grayLine = document.createElement("div");
+    grayLine.classList.add("gray_line");
+
+    modalGallery.appendChild(grayLine);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -217,6 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Open modal on click on the edit button
     editButton.addEventListener("click", () => {
         modalState("block");
+        updateModal();
     });
 
     // Close modal if click on screen outside "modalGallery"
