@@ -83,12 +83,15 @@ let addAllWorks = async (filter) => {
 let changeCurrentCategory = (filter) => {
     let all_buttons = document.querySelectorAll(".categories .btn");
     
-    // Remove all "current-btn" classes from categories buttons
-    for (let index = 0; index < 4; index++) {
-        all_buttons[index].classList.remove("current-btn");
+    // If the first button exists
+    if (all_buttons[0]) {
+        // Remove all "current-btn" classes from categories buttons
+        for (let index = 0; index < 4; index++) {
+            all_buttons[index].classList.remove("current-btn");
+        }
+        // Add the "current button" class to the clicked button
+        all_buttons[filter].classList.add("current-btn");
     }
-
-    all_buttons[filter].classList.add("current-btn"); // Add the "current button" class to the clicked button
 }
 
 // Add all the categories buttons
@@ -134,10 +137,9 @@ let removeAllWork = () => {
 // Check if the user is logged
 let userLogged = () => {
     const token = window.localStorage.getItem("token");
-    // window.localStorage.removeItem("token");
 
     // If the user is logged, change the UI to edit mode
-    if (token != "") {
+    if (token) {
         // Add the edit mode header
         let edition_block = document.querySelector(".edition_block");
         edition_block.classList.add("logged");
@@ -176,19 +178,43 @@ let userLogged = () => {
 
 // Create the Modal
 let createModal = () => {
+    let deleteGrayLine = document.querySelectorAll(".gray_line");
+    let deleteButton = document.querySelectorAll(".modal_gallery button");
+
+    // Undo adding new lines or buttons if they already exist
+    if (deleteGrayLine[0] && deleteButton[0]) {
+        deleteGrayLine[0].remove();
+        deleteButton[0].remove();
+    }
+
     // Create the modal and append to the body
     let body = document.querySelector("body");
     let modal_background = document.createElement("div");
 
+    // Add a gray line to separate the images and button
+    let grayLine = document.createElement("div");
+    grayLine.classList.add("gray_line");
+
+    // Add a button to add an image
+    let button = document.createElement("button");
+    button.classList.add("add_picture");
+    button.innerHTML = "Ajouter une photo";
+
+    // Add the modal background
     modal_background.classList.add("modal");
-    body.insertBefore(modal_background, document.body.firstChild); // Add modal as first body element
+    // Add modal as first body element
+    body.insertBefore(modal_background, document.body.firstChild); 
 
     // Create a gallery and append to modal
-    let modal = document.querySelector(".modal_gallery");
+    let modalGallery = document.querySelector(".modal_gallery");
     let gallery = document.createElement("div");
 
     gallery.classList.add("modal_works");
-    modal.appendChild(gallery);
+
+    // Append every elements
+    modalGallery.appendChild(gallery);
+    modalGallery.appendChild(grayLine);
+    modalGallery.appendChild(button);
 }
 
 // Show modal or not depending on parameter passed in function calls
@@ -235,16 +261,17 @@ let updateModal = async () => {
         // Add image and title to the figure
         figure.appendChild(image);
     }
+}
 
-    // Add a gray line to separate the images and button
-    let grayLine = document.createElement("div");
-    grayLine.classList.add("gray_line");
-
-    modalGallery.appendChild(grayLine);
+// Log out user
+let logoutUser = () => {
+    // Delete authentication token
+    window.localStorage.removeItem("token");
+    // Refresh page
+    location.reload();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-
     createModal();
     addCategories();
     getWorks();
@@ -256,7 +283,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let modal = document.querySelector(".modal");
     let modalGallery = document.querySelector(".modal_gallery");
-    let closeBtn = document.querySelector(".fa-xmark");
+    let closeButton = document.querySelector(".fa-xmark");
+
+    let addPictureButton = document.querySelector(".add_picture");
+
+    let logoutButton = document.querySelector(".logout");
 
     // Each button has an Event Listener. On click, call the filterWork function
     for (let index = 0; index < all_buttons.length; index++) {
@@ -278,13 +309,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Close modal
-    closeBtn.addEventListener("click", () => {
+    closeButton.addEventListener("click", () => {
         modalState("none");
     });
+    
+    // Click on button "add a picture" in modal
+    addPictureButton.addEventListener("click", () => {
+        console.log("click on add picture");
+    });
 
-    // Click on "modalGallery"
-    modalGallery.addEventListener("click", () => {
-        console.log("click on modal");
+    // Logout the user by clicking the logout button
+    logoutButton.addEventListener("click", () => {
+        logoutUser();
     });
 
 });

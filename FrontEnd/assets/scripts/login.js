@@ -21,7 +21,7 @@ let loginUser = async () => {
     let data = await login.json();
     
     // If token is not undefined, redirect to home page with edit
-    if (data.token != undefined) {
+    if (data.token !== undefined) {
         window.localStorage.setItem("token", data.token);
         window.location.href = "http://localhost:5500";
     }

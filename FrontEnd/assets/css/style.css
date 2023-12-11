@@ -207,19 +207,19 @@ li:hover {
 	display: none;
 	z-index: 2;
 	background-color: #fff;
-	position: absolute;
+	position: fixed;
 	top: 50%; /* Center the modal */
 	left: 50%;
 	transform: translate(-50%, -50%);
-	width: 40vw;
+	width: 500px;
 	border-radius: 10px;
 }
 
 .modal_works {
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
-	column-gap: 20px;
-	row-gap: 30px;
+	column-gap: 10px;
+	row-gap: 25px;
 	align-items: center;
     justify-items: center;
 	margin: 50px 75px;
@@ -242,7 +242,35 @@ li:hover {
     background-color: rgb(179, 179, 179);
     height: 1px;
 	margin: 0 75px;
-    margin-bottom: 50px;
+    margin-bottom: 35px;
+}
+
+.add_picture {
+	background-color: #1D6154;
+	color: #fff;
+	border: none;
+	border-radius: 25px;
+	padding: 5px 30px;
+	font-family: 'Syne';
+	font-size: 14px;
+	display: block;
+    margin: auto;
+	margin-bottom: 35px;
+}
+
+.add_picture:hover {
+	background-color: #1D6154;
+	color: #fff;
+	cursor: pointer;
+}
+
+.add_picture:active {
+	background-color: #113831;
+	color: #fff;
+}
+
+.logout {
+	cursor: pointer;
 }
 
 .modal_gallery p {
