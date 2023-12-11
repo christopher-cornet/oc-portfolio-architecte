@@ -96,6 +96,13 @@ let changeCurrentCategory = (filter) => {
 
 // Add all the categories buttons
 let addCategories = async () => {
+    let title = document.querySelector(".title");
+    const categorieParent = document.createElement("div");
+    categorieParent.classList.add("categories");
+
+    // Place the "categories" div after the "title" div
+    title.insertAdjacentHTML("afterend", "<div class='categories'></div>");
+
     const categories = document.querySelector(".categories");
 
     // Create the filters buttons
@@ -172,7 +179,65 @@ let userLogged = () => {
         return true;
     }
     else {
+        // Fix header margin top at 50px
+        let header = document.querySelector("header");
+        header.style.marginTop = "50px";
+
+        // Log out button change to "login" and redirect to the login page
+        let logoutButton = document.querySelector(".logout");
+        
+        if (logoutButton) {
+            logoutButton.innerHTML = "login";
+            logoutButton.classList.remove("logout");
+        }
+        
+        let editionBlock = document.querySelector(".edition_block");
+        let editButton = document.querySelector(".edit-btn");
+
+        // Remove logged in user elements
+        if (editionBlock && editButton) {
+            editionBlock.remove();
+            editButton.remove();
+        }
+
         return false;
+    }
+}
+
+// Add the events of the categories buttons
+let categoriesEvents = () => {
+    let all_buttons = document.querySelectorAll(".categories button");
+
+    // Each button has an Event Listener. On click, call the filterWork function
+    for (let index = 0; index < all_buttons.length; index++) {
+        // Add an event listener on all buttons
+        all_buttons[index].addEventListener("click", () => {
+            addAllWorks(index); // Give a number (0, 1, 2, or 3) in parameter
+        });
+    }
+}
+
+// Add the events after clicking on login or logout
+let loginEvents = () => {
+    let loginButton = document.querySelectorAll("header nav ul li");
+    let logoutButton = document.querySelector(".logout");
+
+    // If login button is equal to "login", redirect user to login page
+    if (loginButton[2].innerHTML === "login") {
+        loginButton[2].addEventListener("click", () => {
+            window.location.href = "http://localhost:5500/login.html";
+        });
+    }
+    // Else, the login button is a logout button, so logout user
+    else {
+        // Logout the user by clicking the logout button
+        logoutButton.addEventListener("click", () => {
+            logoutUser();
+            userLogged();
+            loginEvents();
+            addCategories();
+            categoriesEvents();
+        });
     }
 }
 
@@ -203,7 +268,7 @@ let createModal = () => {
     // Add the modal background
     modal_background.classList.add("modal");
     // Add modal as first body element
-    body.insertBefore(modal_background, document.body.firstChild); 
+    body.insertBefore(modal_background, document.body.firstChild);
 
     // Create a gallery and append to modal
     let modalGallery = document.querySelector(".modal_gallery");
@@ -229,7 +294,6 @@ let modalState = (state) => {
 // Update the gallery inside the modal
 let updateModal = async () => {
     let modal = document.querySelector(".modal_works");
-    let modalGallery = document.querySelector(".modal_gallery");
     let allImages = document.querySelectorAll(".modal_works figure");
 
     // Remove all images
@@ -267,8 +331,6 @@ let updateModal = async () => {
 let logoutUser = () => {
     // Delete authentication token
     window.localStorage.removeItem("token");
-    // Refresh page
-    location.reload();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -276,32 +338,24 @@ document.addEventListener("DOMContentLoaded", () => {
     addCategories();
     getWorks();
     userLogged();
-
-    let all_buttons = document.querySelectorAll(".categories button");
+    loginEvents();
+    categoriesEvents();
 
     let editButton = document.querySelector(".edit-btn");
 
     let modal = document.querySelector(".modal");
-    let modalGallery = document.querySelector(".modal_gallery");
     let closeButton = document.querySelector(".fa-xmark");
 
     let addPictureButton = document.querySelector(".add_picture");
 
-    let logoutButton = document.querySelector(".logout");
-
-    // Each button has an Event Listener. On click, call the filterWork function
-    for (let index = 0; index < all_buttons.length; index++) {
-        // Add an event listener on all buttons
-        all_buttons[index].addEventListener("click", () => {
-            addAllWorks(index); // Give a number (0, 1, 2, or 3) in parameter
+    // If edit button exists in DOM
+    if (editButton) {
+        // Open modal on click on the edit button
+        editButton.addEventListener("click", () => {
+            modalState("block");
+            updateModal();
         });
     }
-
-    // Open modal on click on the edit button
-    editButton.addEventListener("click", () => {
-        modalState("block");
-        updateModal();
-    });
 
     // Close modal if click on screen outside "modalGallery"
     modal.addEventListener("click", () => {
@@ -316,11 +370,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Click on button "add a picture" in modal
     addPictureButton.addEventListener("click", () => {
         console.log("click on add picture");
-    });
-
-    // Logout the user by clicking the logout button
-    logoutButton.addEventListener("click", () => {
-        logoutUser();
     });
 
 });
