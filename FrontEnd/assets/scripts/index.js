@@ -319,12 +319,22 @@ let updateModal = async () => {
         image.src = imageSrc;
         image.alt = titleSrc;
 
+        // Add the trash icons
+        let trash = document.createElement("i");
+        trash.classList.add("fa-solid", "fa-trash-can", "fa-xs");
+
         // Add figure to the modal
         modal.appendChild(figure);
 
-        // Add image and title to the figure
+        // Add image and trash icon to the figure
         figure.appendChild(image);
+        figure.appendChild(trash);
     }
+}
+
+// Remove a work
+let removeWork = () => {
+    
 }
 
 // Log out user
