@@ -303,7 +303,7 @@ let updateModal = async () => {
 
     let data = [...response_data]; // Create a copy of response_data
 
-    console.log(data);
+    // console.log(data);
 
     // Update all images
     for (let i = 0; i < data.length; i++) {
@@ -330,11 +330,94 @@ let updateModal = async () => {
         figure.appendChild(image);
         figure.appendChild(trash);
     }
+
+    let trash = document.querySelectorAll(".fa-trash-can")
+
+    // On click on trash icon, remove the work corresponding
+    for (let index = 0; index < trash.length; index++) {
+        trash[index].addEventListener("click", () => {
+            removeWork(index);
+        });  
+    }
+}
+
+// Modal in add picture mode
+let addPictureModal = () => {
+    let modalTitle = document.querySelector(".modal_gallery p");
+    let addPictureButton = document.querySelector(".add_picture");
+    let closeModalIcon = document.querySelector(".fa-xmark");
+    let modal_works = document.querySelector(".modal_works");
+    let grayLine = document.querySelector(".gray_line");
+
+    // Add the submit button
+    grayLine.insertAdjacentHTML("afterend", "<button class='valid'>Valider</button>")
+
+    // Hide works
+    modal_works.style.display = "none";
+
+    // Remove the add picture button
+    addPictureButton.remove();
+
+    // Edit title text
+    modalTitle.innerHTML = "Ajout photo";
+
+    // If there is no arrow in DOM, add an arrow on the top left of modal
+    if (!document.querySelector(".fa-arrow-left")) {
+        closeModalIcon.insertAdjacentHTML("beforebegin", "<i class='fa-solid fa-arrow-left fa-xl'></i>");
+    }
+
+    let arrow = document.querySelector(".fa-arrow-left");
+    let submit = document.querySelector(".valid");
+
+    // On click on arrow, return to first modal
+    arrow.addEventListener("click", () => {
+        // Remove arrow and the submit button
+        arrow.remove();
+        submit.remove();
+
+        // Display all the first modal elements
+        modalTitle.innerHTML = "Galerie photo";
+        modal_works.style.display = "grid";
+        grayLine.insertAdjacentHTML("afterend", "<button class='add_picture'>Ajouter une photo</button>");
+
+        // Re-add the event listener
+        addPictureEvents("addPictureButton");
+    });
+
+    // On click on submit button, add a work
+    addPictureEvents("submit");
+}
+
+// Add picture and Submit button events
+let addPictureEvents = (buttonName) => {
+    if (buttonName === "addPictureButton") {
+        // Re-add the event listener
+        let addPictureButton = document.querySelector(".add_picture");
+
+        addPictureButton.addEventListener("click", () => {
+            addPictureModal();
+        });
+    }
+    else if (buttonName === "submit") {
+        // On click on submit button, add a work
+        let submit = document.querySelector(".valid");
+
+        submit.addEventListener("click", () => {
+            addWork("title", "name");
+        });
+    }
+}
+
+// Add a work
+let addWork = (title, name) => {
+    console.log("Add work : ", title, name);
 }
 
 // Remove a work
-let removeWork = () => {
-    
+let removeWork = (id) => {
+    console.log("remove work. id : ", id + 1);
+    let data = response_data; // Create a copy of response_data
+    console.log(data[id]);
 }
 
 // Log out user
@@ -379,7 +462,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Click on button "add a picture" in modal
     addPictureButton.addEventListener("click", () => {
-        console.log("click on add picture");
+        addPictureModal();
     });
 
 });

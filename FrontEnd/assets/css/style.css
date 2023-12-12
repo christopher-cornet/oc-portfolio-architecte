@@ -258,17 +258,40 @@ li:hover {
 	display: block;
     margin: auto;
 	margin-bottom: 35px;
+	cursor: pointer;
 }
 
 .add_picture:hover {
 	background-color: #1D6154;
 	color: #fff;
-	cursor: pointer;
 }
 
 .add_picture:active {
 	background-color: #113831;
 	color: #fff;
+}
+
+.valid {
+	background-color: #a7a7a7;
+	color: #fff;
+	border: none;
+	border-radius: 25px;
+	padding: 5px 30px;
+	font-family: 'Syne';
+	font-size: 14px;
+	display: block;
+    margin: auto;
+	margin-bottom: 35px;
+	cursor: pointer;
+}
+
+.valid:hover {
+	background-color: #a7a7a7;
+	color: #fff;
+}
+
+.valid:active {
+	background-color: #949494;
 }
 
 .logout {
@@ -298,6 +321,13 @@ li:hover {
 	top: 5px;
 	border-radius: 3px;
 	cursor: pointer;
+}
+
+.fa-arrow-left {
+	cursor: pointer;
+	position: absolute;
+	left: 25px;
+	top: 35px;
 }
 
 #introduction p {
