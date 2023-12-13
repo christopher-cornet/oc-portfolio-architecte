@@ -351,6 +351,8 @@ let addPictureModal = () => {
 
     // Add the submit button
     grayLine.insertAdjacentHTML("afterend", "<button class='valid'>Valider</button>")
+    
+    grayLine.style.marginTop = "40px";
 
     // Hide works
     modal_works.style.display = "none";
@@ -369,11 +371,78 @@ let addPictureModal = () => {
     let arrow = document.querySelector(".fa-arrow-left");
     let submit = document.querySelector(".valid");
 
+    // Section containing the elements of the modal in "add picture" mode
+    let section = document.createElement("section");
+    section.classList.add("modal_add_content");
+
+    // First div
+    let addPhoto = document.createElement("div");
+    let imageIcon = document.createElement("i");
+    let addPhotoButton = document.createElement("button");
+    let fileExtensionAllowed = document.createElement("p");
+
+    // Define classes and text
+    imageIcon.classList.add("fa-regular", "fa-image", "fa-2xl");
+    addPhoto.classList.add("add_photo");
+    addPhotoButton.classList.add("button_add_photo");
+
+    addPhotoButton.innerHTML = "+ Ajouter photo";
+    fileExtensionAllowed.innerHTML = "jpg, png : 4mo max";
+
+    // Append elements to the first div
+    addPhoto.appendChild(imageIcon);
+    addPhoto.appendChild(addPhotoButton);
+    addPhoto.appendChild(fileExtensionAllowed);
+
+    // Second div
+
+    let title = document.createElement("div");
+    let titleLabel = document.createElement("label");
+    let titleInput = document.createElement("input");
+
+    title.classList.add("add_title");
+    titleLabel.classList.add("add_title_label");
+    titleInput.classList.add("add_title_input");
+
+    titleLabel.innerHTML = "Titre";
+    titleInput.type = "text";
+
+    title.appendChild(titleLabel);
+    title.appendChild(titleInput);
+
+    // Third div
+
+    let categorie = document.createElement("div");
+    let categorieLabel = document.createElement("label");
+    let categorieSelect = document.createElement("select");
+
+    categorie.classList.add("add_categorie");
+    categorieLabel.classList.add("add_categorie_label");
+    categorieSelect.classList.add("add_categorie_select");
+
+    categorieLabel.innerHTML = "Catégorie";
+
+    categorie.appendChild(categorieLabel);
+    categorie.appendChild(categorieSelect);
+
+    section.appendChild(addPhoto);
+    section.appendChild(title);
+    section.appendChild(categorie);
+
+    let sectionPosition = document.querySelector(".modal_gallery p");
+    
+    // Add the section after the title "Ajout photo"
+    sectionPosition.insertAdjacentElement("afterend", section);
+
     // On click on arrow, return to first modal
     arrow.addEventListener("click", () => {
-        // Remove arrow and the submit button
+        // Remove all the elements of the modal in "add picture" mode
         arrow.remove();
         submit.remove();
+
+        addPhoto.remove();
+        title.remove();
+        categorie.remove();
 
         // Display all the first modal elements
         modalTitle.innerHTML = "Galerie photo";
