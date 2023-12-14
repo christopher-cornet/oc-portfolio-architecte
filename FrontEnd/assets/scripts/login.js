@@ -20,9 +20,10 @@ let loginUser = async () => {
 
     let data = await login.json();
     
-    // If token is not undefined, redirect to home page with edit
-    if (data.token !== undefined) {
+    // If token and userId are not undefined, redirect to home page in edit mode
+    if (data.token !== undefined && data.userId !== undefined) {
         window.localStorage.setItem("token", data.token);
+        window.localStorage.setItem("id", data.userId);
         window.location.href = "http://localhost:5500";
     }
     // Else, display error message

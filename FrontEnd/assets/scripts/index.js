@@ -144,9 +144,13 @@ let removeAllWork = () => {
 // Check if the user is logged
 let userLogged = () => {
     const token = window.localStorage.getItem("token");
+    const id = window.localStorage.getItem("id");
+
+    console.log("token:", token);
+    console.log("user id:", id);
 
     // If the user is logged, change the UI to edit mode
-    if (token) {
+    if (token && id) {
         // Add the edit mode header
         let edition_block = document.querySelector(".edition_block");
         edition_block.classList.add("logged");
@@ -379,24 +383,30 @@ let addPictureModal = () => {
     let addPhoto = document.createElement("div");
     let imageIcon = document.createElement("i");
     let addPhotoButton = document.createElement("button");
+    let addPhotoInput = document.createElement("input");
     let fileExtensionAllowed = document.createElement("p");
 
     // Define classes and text
     imageIcon.classList.add("fa-regular", "fa-image", "fa-2xl");
     addPhoto.classList.add("add_photo");
     addPhotoButton.classList.add("button_add_photo");
+    addPhotoInput.classList.add("input_add_photo");
 
+    addPhotoInput.type = "file";
+    addPhotoInput.accept = ".jpg, .png";
     addPhotoButton.innerHTML = "+ Ajouter photo";
     fileExtensionAllowed.innerHTML = "jpg, png : 4mo max";
 
     // Append elements to the first div
     addPhoto.appendChild(imageIcon);
+    addPhoto.appendChild(addPhotoInput);
     addPhoto.appendChild(addPhotoButton);
     addPhoto.appendChild(fileExtensionAllowed);
 
     // Second div
 
     let title = document.createElement("div");
+    let form = document.createElement("form");
     let titleLabel = document.createElement("label");
     let titleInput = document.createElement("input");
 
@@ -407,6 +417,7 @@ let addPictureModal = () => {
     titleLabel.innerHTML = "Titre";
     titleInput.type = "text";
 
+    form.appendChild(title);
     title.appendChild(titleLabel);
     title.appendChild(titleInput);
 
@@ -415,6 +426,28 @@ let addPictureModal = () => {
     let categorie = document.createElement("div");
     let categorieLabel = document.createElement("label");
     let categorieSelect = document.createElement("select");
+
+    let data = [...response_data]; // Create a copy of response_data
+    console.log(data);
+
+    // First option of the select is empty
+    let option = document.createElement("option");
+    option.value = 0;
+    option.text = "";
+
+    form.appendChild(categorie);
+    categorieSelect.appendChild(option);
+
+    // Add the categories to the select element
+    data.forEach((element) => {
+        if (element.id < 4) {
+            let option = document.createElement("option");
+            option.value = element.category.id;
+            option.text = element.category.name;
+    
+            categorieSelect.appendChild(option);
+        }
+    });
 
     categorie.classList.add("add_categorie");
     categorieLabel.classList.add("add_categorie_label");
@@ -426,13 +459,30 @@ let addPictureModal = () => {
     categorie.appendChild(categorieSelect);
 
     section.appendChild(addPhoto);
-    section.appendChild(title);
-    section.appendChild(categorie);
+    section.appendChild(form);
 
     let sectionPosition = document.querySelector(".modal_gallery p");
     
     // Add the section after the title "Ajout photo"
     sectionPosition.insertAdjacentElement("afterend", section);
+
+    // If the input value is changed, add the image to the modal in preview
+    addPhotoInput.addEventListener("change", (event) => {
+        console.log("Photo :", addPhotoInput.value);
+        const file = event.target.files[0];
+        const imageURL = URL.createObjectURL(file);
+
+        // Create the image preview
+        let imagePreview = document.createElement("img");
+        imagePreview.src = imageURL;
+
+        addPhoto.appendChild(imagePreview);
+
+        imageIcon.remove();
+        addPhotoInput.remove();
+        addPhotoButton.remove();
+        fileExtensionAllowed.remove();
+    });
 
     // On click on arrow, return to first modal
     arrow.addEventListener("click", () => {
@@ -443,6 +493,8 @@ let addPictureModal = () => {
         addPhoto.remove();
         title.remove();
         categorie.remove();
+
+        section.remove();
 
         // Display all the first modal elements
         modalTitle.innerHTML = "Galerie photo";
@@ -471,15 +523,19 @@ let addPictureEvents = (buttonName) => {
         // On click on submit button, add a work
         let submit = document.querySelector(".valid");
 
+        let title = document.querySelector(".add_title_input");
+        let categorie = document.querySelector(".add_categorie_select");
+
         submit.addEventListener("click", () => {
-            addWork("title", "name");
+            addWork(title.value, categorie.value);
         });
     }
 }
 
 // Add a work
 let addWork = (title, name) => {
-    console.log("Add work : ", title, name);
+    console.log("Titre : ", title);
+    console.log("Catégorie : ", name);
 }
 
 // Remove a work
