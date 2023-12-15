@@ -468,13 +468,18 @@ let addPictureModal = () => {
 
     // If the input value is changed, add the image to the modal in preview
     addPhotoInput.addEventListener("change", (event) => {
-        console.log("Photo :", addPhotoInput.value);
+        // Get the image URL from the input file
         const file = event.target.files[0];
+        // Create a URL from the file object to use as img src
         const imageURL = URL.createObjectURL(file);
 
         // Create the image preview
         let imagePreview = document.createElement("img");
         imagePreview.src = imageURL;
+        imagePreview.style.height = "150px";
+        
+        addPhoto.style.paddingTop = "0";
+        addPhoto.style.paddingBottom = "0";
 
         addPhoto.appendChild(imagePreview);
 
