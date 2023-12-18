@@ -394,6 +394,7 @@ let addPictureModal = () => {
 
     addPhotoInput.type = "file";
     addPhotoInput.accept = ".jpg, .png";
+    addPhotoInput.name = "image";
     addPhotoButton.innerHTML = "+ Ajouter photo";
     fileExtensionAllowed.innerHTML = "jpg, png : 4mo max";
 
@@ -410,6 +411,9 @@ let addPictureModal = () => {
     let titleLabel = document.createElement("label");
     let titleInput = document.createElement("input");
 
+    form.action = "/";
+    form.method = "post";
+    form.enctype = "multipart/form-data";
     title.classList.add("add_title");
     titleLabel.classList.add("add_title_label");
     titleInput.classList.add("add_title_input");
@@ -417,6 +421,7 @@ let addPictureModal = () => {
     titleLabel.innerHTML = "Titre";
     titleInput.type = "text";
 
+    form.appendChild(addPhoto);
     form.appendChild(title);
     title.appendChild(titleLabel);
     title.appendChild(titleInput);
@@ -458,7 +463,6 @@ let addPictureModal = () => {
     categorie.appendChild(categorieLabel);
     categorie.appendChild(categorieSelect);
 
-    section.appendChild(addPhoto);
     section.appendChild(form);
 
     let sectionPosition = document.querySelector(".modal_gallery p");
@@ -484,7 +488,8 @@ let addPictureModal = () => {
         addPhoto.appendChild(imagePreview);
 
         imageIcon.remove();
-        addPhotoInput.remove();
+        // addPhotoInput.remove();
+        addPhotoInput.style.display = "none";
         addPhotoButton.remove();
         fileExtensionAllowed.remove();
     });
@@ -538,16 +543,74 @@ let addPictureEvents = (buttonName) => {
 }
 
 // Add a work
-let addWork = (title, name) => {
+let addWork = async (title, category) => {
+    let data = response_data; // Create a copy of response_data
+
+    let url = "http://localhost:5678/api/";
+
+    // let imageSrc = document.querySelector(".add_photo img");
+    // let image = imageSrc.src;
+
+    // console.log("image : ", image);
+
+    // Get the last id and add 1 to create the new work id
+    let id = data.length + 1;
+
+    let token = window.localStorage.getItem("token");
+    let userId = window.localStorage.getItem("id");
+
+    // Sélectionnez l'élément image
+    let imageSrc = document.querySelector(".add_photo img");
+
+    // Obtenez l'URL de la source de l'image
+    let image = imageSrc.src;
+
+    console.log("image : ", image);
+
+    let formData = new FormData();
+    formData.append("id", id);
+    formData.append("title", title);
+    formData.append("image", image);
+    formData.append("categoryId", category);
+    formData.append("userId", userId);
+
+    console.log(formData.get("id"));
+    console.log(formData.get("title"));
+    console.log(formData.get("image"));
+    console.log(formData.get("categoryId"));
+    console.log(formData.get("userId"));
+
+    // Add the work to the API and update the gallery
+    try {
+        let work = await fetch("http://localhost:5678/api/works", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            body: formData
+        });
+    }
+    catch (error) {
+        console.log("Erreur API : ",error);
+    }
+    
     console.log("Titre : ", title);
-    console.log("Catégorie : ", name);
+    console.log("Catégorie : ", category);
 }
 
 // Remove a work
-let removeWork = (id) => {
+let removeWork = async (id) => {
     console.log("remove work. id : ", id + 1);
     let data = response_data; // Create a copy of response_data
     console.log(data[id]);
+
+    // Remove the work of the API and update the gallery
+    let work = await fetch(`http://localhost:5678/api/works/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
 }
 
 // Log out user
