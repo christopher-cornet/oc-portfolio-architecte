@@ -14,7 +14,7 @@ let getWorks = async () => {
 let addAllWorks = async (filter) => {
     removeAllWork(); // Remove all the precedent work
 
-    let data = [...response_data]; // Create a copy of response_data
+    let data = response_data; // Create a copy of response_data
 
     let gallery = document.querySelector(".gallery");
 
@@ -296,7 +296,9 @@ let modalState = (state) => {
 }
 
 // Update the gallery inside the modal
-let updateModal = async () => {
+let updateModal = () => {
+    let data = response_data; // Create a copy of response_data
+
     let modal = document.querySelector(".modal_works");
     let allImages = document.querySelectorAll(".modal_works figure");
 
@@ -304,10 +306,6 @@ let updateModal = async () => {
     for (let index = 0; index < allImages.length; index++) {
         allImages[index].remove(); // Reset modal content
     }
-
-    let data = [...response_data]; // Create a copy of response_data
-
-    // console.log(data);
 
     // Update all images
     for (let i = 0; i < data.length; i++) {
@@ -335,12 +333,23 @@ let updateModal = async () => {
         figure.appendChild(trash);
     }
 
-    let trash = document.querySelectorAll(".fa-trash-can")
+    let trash = document.querySelectorAll(".fa-trash-can");
+    let id;
 
     // On click on trash icon, remove the work corresponding
     for (let index = 0; index < trash.length; index++) {
         trash[index].addEventListener("click", () => {
-            removeWork(index);
+            // Delete the work from the API
+            removeWork(index, id);
+
+            // Update the modal
+            updateModal();
+
+            // Remove all the precedent work from the gallery
+            removeAllWork();
+
+            // Get all the works from the API and update the gallery
+            getWorks();
         });  
     }
 }
@@ -432,7 +441,7 @@ let addPictureModal = () => {
     let categorieLabel = document.createElement("label");
     let categorieSelect = document.createElement("select");
 
-    let data = [...response_data]; // Create a copy of response_data
+    let data = response_data; // Create a copy of response_data
     console.log(data);
 
     // First option of the select is empty
@@ -476,6 +485,7 @@ let addPictureModal = () => {
         const file = event.target.files[0];
         // Create a URL from the file object to use as img src
         const imageURL = URL.createObjectURL(file);
+        console.log(imageURL);
 
         // Create the image preview
         let imagePreview = document.createElement("img");
@@ -510,6 +520,9 @@ let addPictureModal = () => {
         modalTitle.innerHTML = "Galerie photo";
         modal_works.style.display = "grid";
         grayLine.insertAdjacentHTML("afterend", "<button class='add_picture'>Ajouter une photo</button>");
+
+        // Update the modal gallery with the new work added
+        updateModal();
 
         // Re-add the event listener
         addPictureEvents("addPictureButton");
@@ -546,43 +559,46 @@ let addPictureEvents = (buttonName) => {
 let addWork = async (title, category) => {
     let data = response_data; // Create a copy of response_data
 
-    let url = "http://localhost:5678/api/";
-
-    // let imageSrc = document.querySelector(".add_photo img");
-    // let image = imageSrc.src;
-
-    // console.log("image : ", image);
-
     // Get the last id and add 1 to create the new work id
     let id = data.length + 1;
 
     let token = window.localStorage.getItem("token");
     let userId = window.localStorage.getItem("id");
 
-    // Sélectionnez l'élément image
-    let imageSrc = document.querySelector(".add_photo img");
+    // Select the image input
+    let imageInput = document.querySelector(".add_photo input[type='file']");
 
-    // Obtenez l'URL de la source de l'image
-    let image = imageSrc.src;
-
-    console.log("image : ", image);
+    // Get the image file
+    let imageFile = imageInput.files[0];
 
     let formData = new FormData();
     formData.append("id", id);
     formData.append("title", title);
-    formData.append("image", image);
-    formData.append("categoryId", category);
+    formData.append("image", imageFile);
+    formData.append("category", category);
     formData.append("userId", userId);
 
     console.log(formData.get("id"));
     console.log(formData.get("title"));
     console.log(formData.get("image"));
-    console.log(formData.get("categoryId"));
+    console.log(formData.get("category"));
     console.log(formData.get("userId"));
+
+    // Set the maximum allowed file size in bytes
+    const maxImageSize = 4 * 1024 * 1024; // 4 MB
+
+    // Check if the file size exceeds the limit
+    if (formData.get("image").size > maxImageSize) {
+        console.log('File size exceeds the allowed limit.');
+        return;
+    }
+    else {
+        console.log("File size is OK.");
+    }
 
     // Add the work to the API and update the gallery
     try {
-        let work = await fetch("http://localhost:5678/api/works", {
+        await fetch(`${url}works`, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -596,13 +612,22 @@ let addWork = async (title, category) => {
     
     console.log("Titre : ", title);
     console.log("Catégorie : ", category);
+
+    // Update the gallery
+    getWorks();
+    addAllWorks(0);
+    updateModal();
 }
 
 // Remove a work
-let removeWork = async (id) => {
-    console.log("remove work. id : ", id + 1);
+let removeWork = async (index, id) => {
     let data = response_data; // Create a copy of response_data
-    console.log(data[id]);
+    const token = window.localStorage.getItem("token");
+
+    id = data[index].id;
+
+    console.log("index : ", index);
+    console.log("remove work. id : ", id);
 
     // Remove the work of the API and update the gallery
     let work = await fetch(`http://localhost:5678/api/works/${id}`, {
@@ -611,6 +636,9 @@ let removeWork = async (id) => {
             "Authorization": `Bearer ${token}`
         }
     });
+
+    let allImages = document.querySelectorAll(".modal_works figure");
+    allImages[index].remove(); // Remove the work from the modal
 }
 
 // Log out user
