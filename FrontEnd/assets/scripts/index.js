@@ -401,6 +401,7 @@ let addPictureModal = () => {
     addPhotoButton.classList.add("button_add_photo");
     addPhotoInput.classList.add("input_add_photo");
 
+    addPhotoInput.required = true;
     addPhotoInput.type = "file";
     addPhotoInput.accept = ".jpg, .png";
     addPhotoInput.name = "image";
@@ -429,6 +430,7 @@ let addPictureModal = () => {
 
     titleLabel.innerHTML = "Titre";
     titleInput.type = "text";
+    titleInput.required = true;
 
     form.appendChild(addPhoto);
     form.appendChild(title);
@@ -448,6 +450,8 @@ let addPictureModal = () => {
     let option = document.createElement("option");
     option.value = 0;
     option.text = "";
+
+    categorieSelect.required = true;
 
     form.appendChild(categorie);
     categorieSelect.appendChild(option);
@@ -479,13 +483,30 @@ let addPictureModal = () => {
     // Add the section after the title "Ajout photo"
     sectionPosition.insertAdjacentElement("afterend", section);
 
+    // Change the submit button background color based on the input values
+    let input = [addPhotoInput, titleInput, categorieSelect];
+
+    for (let index = 0; index < 3; index++) {
+        input[index].addEventListener("change", () => {
+            // If all the fields are filled, change the submit button background color to green
+            if (addPhotoInput.value.length > 0 && titleInput.value.length > 0 && categorieSelect.value !== "0") {
+                submit.classList.remove("valid");
+                submit.classList.add("green");
+            }
+            // Else, change the submit button background color to gray
+            else if (addPhotoInput.value.length === 0 || titleInput.value.length === 0 || categorieSelect.value === "0") {
+                submit.classList.add("valid");
+                submit.classList.remove("green");
+            }
+        });
+    }
+
     // If the input value is changed, add the image to the modal in preview
     addPhotoInput.addEventListener("change", (event) => {
         // Get the image URL from the input file
         const file = event.target.files[0];
         // Create a URL from the file object to use as img src
         const imageURL = URL.createObjectURL(file);
-        console.log(imageURL);
 
         // Create the image preview
         let imagePreview = document.createElement("img");
@@ -498,7 +519,6 @@ let addPictureModal = () => {
         addPhoto.appendChild(imagePreview);
 
         imageIcon.remove();
-        // addPhotoInput.remove();
         addPhotoInput.style.display = "none";
         addPhotoButton.remove();
         fileExtensionAllowed.remove();
@@ -596,24 +616,54 @@ let addWork = async (title, category) => {
         console.log("File size is OK.");
     }
 
+    // If the image is filled, title is filled and category is selected
+    // if (formData.get("image").size > 0 && formData.get("title") && formData.get("category") !== "0") {
+    //     console.log("All fields are filled.");
+    //     // Add the work to the API and update the gallery
+    //     try {
+    //         await fetch(`${url}works`, {
+    //             method: "POST",
+    //             headers: {
+    //                 "Authorization": `Bearer ${token}`
+    //             },
+    //             body: formData
+    //         });
+    //     }
+    //     catch (error) {
+    //         console.log("Erreur API : ",error);
+    //     }
+        
+    //     console.log("Titre : ", title);
+    //     console.log("Catégorie : ", category);
+
+    //     // Update the gallery
+    //     getWorks();
+    //     addAllWorks(0);
+    //     updateModal();
+    // }
+    // else {
+    //     console.log("Veuillez remplir tous les champs.");
+    //     return;
+    // }
+
     // Add the work to the API and update the gallery
-    try {
-        await fetch(`${url}works`, {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            },
-            body: formData
-        });
-    }
-    catch (error) {
-        console.log("Erreur API : ",error);
-    }
+    // try {
+    //     await fetch(`${url}works`, {
+    //         method: "POST",
+    //         headers: {
+    //             "Authorization": `Bearer ${token}`
+    //         },
+    //         body: formData
+    //     });
+    // }
+    // catch (error) {
+    //     console.log("Erreur API : ",error);
+    // }
     
     console.log("Titre : ", title);
     console.log("Catégorie : ", category);
 
-    // Update the gallery
+    // Update the gallery and update the modal
     getWorks();
     addAllWorks(0);
     updateModal();

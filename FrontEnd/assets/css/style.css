@@ -271,8 +271,7 @@ li:hover {
 	color: #fff;
 }
 
-.valid {
-	background-color: #a7a7a7;
+.valid, .green {
 	color: #fff;
 	border: none;
 	border-radius: 25px;
@@ -285,6 +284,10 @@ li:hover {
 	cursor: pointer;
 }
 
+.valid {
+	background-color: #a7a7a7;
+}
+
 .valid:hover {
 	background-color: #a7a7a7;
 	color: #fff;
@@ -292,6 +295,14 @@ li:hover {
 
 .valid:active {
 	background-color: #949494;
+}
+
+.green {
+	background-color: #1D6154;
+}
+
+.green:active {
+	background-color: #113831;
 }
 
 .logout {
@@ -396,6 +407,11 @@ li:hover {
 	padding: 10px;
 	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     border: none;
+}
+
+a {
+	text-decoration: none;
+    color: black;
 }
 
 #introduction p {
