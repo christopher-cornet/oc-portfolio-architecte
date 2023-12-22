@@ -1,8 +1,13 @@
-# Portfolio-architecte-sophie-bluel
+# Portfolio-architect-sophie-bluel
 
-Code du projet 6 d'intégrateur web.
+Web integrator project 6 code.
 
-## Information pour le lancer le code
+## Information to launch the code
 
- - Lancer le backend depuis votre terminal en suivant les instruction du fichier ReadMe.
- - Si vous désirez afficher le code du backend et du frontend, faites le dans 2 instances de VSCode différentes pour éviter tout problème
+ - Launch the backend from your terminal by following the instructions in the ReadMe file.
+ - If you want to display the backend and frontend code, do it in 2 different VSCode instances to avoid any problems
+
+<br>
+ 
+![image](https://github.com/christopher-cornet/oc-portfolio-architecte/assets/115154379/825b334c-509f-4145-a46d-ae8d07c2e9ae)
+
