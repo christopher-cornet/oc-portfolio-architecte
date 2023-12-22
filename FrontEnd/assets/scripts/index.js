@@ -8,6 +8,7 @@ let getWorks = async () => {
     response_data = await get_work.json();
 
     addAllWorks(0);
+    updateModal();
 }
 
 // Add all works to the gallery
@@ -145,9 +146,6 @@ let removeAllWork = () => {
 let userLogged = () => {
     const token = window.localStorage.getItem("token");
     const id = window.localStorage.getItem("id");
-
-    console.log("token:", token);
-    console.log("user id:", id);
 
     // If the user is logged, change the UI to edit mode
     if (token && id) {
@@ -444,7 +442,6 @@ let addPictureModal = () => {
     let categorieSelect = document.createElement("select");
 
     let data = response_data; // Create a copy of response_data
-    console.log(data);
 
     // First option of the select is empty
     let option = document.createElement("option");
@@ -614,80 +611,75 @@ let addWork = async (title, category) => {
         }
     }
 
-    // If the image is filled, title is filled and category is selected
-    // if (formData.get("image").size > 0 && formData.get("title") && formData.get("category") !== "0") {
-    //     console.log("All fields are filled.");
-    //     // Add the work to the API and update the gallery
-    //     try {
-    //         await fetch(`${url}works`, {
-    //             method: "POST",
-    //             headers: {
-    //                 "Authorization": `Bearer ${token}`
-    //             },
-    //             body: formData
-    //         });
-    //     }
-    //     catch (error) {
-    //         console.log("Erreur API : ",error);
-    //     }
-
-    //     // Go back to the first modal
-    //     let arrow = document.querySelector(".fa-arrow-left");
-    //     let submit = document.querySelector(".valid");
-    //     let addPhoto = document.querySelector(".add_photo");
-    //     let addTitle = document.querySelector(".add_title");
-    //     let categorie = document.querySelector(".add_categorie");
-    //     let section = document.querySelector(".modal_add_content");
-    //     let modalTitle = document.querySelector(".modal_gallery p");
-    //     let modal_works = document.querySelector(".modal_works");
-
-    //     // Add a gray line to separate the images and button
-    //     let grayLine = document.querySelector(".gray_line");
-    //     grayLine.insertAdjacentHTML("afterend", "<button class='add_picture'>Ajouter une photo</button>");
-
-    //     // Remove all the elements of the modal in "add picture" mode
-    //     arrow.remove();
-    //     submit.remove();
-
-    //     addPhoto.remove();
-    //     addTitle.remove();
-    //     categorie.remove();
-
-    //     section.remove();
+    // If the image is filled and size don't exceeds the limit, title is filled and category is selected
+    if (formData.get("image").size > 0 && formData.get("image").size < maxImageSize && formData.get("title") && formData.get("category") !== "0") {
+        // Add the work to the API and update the gallery
+        try {
+            await fetch(`${url}works`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
+                body: formData
+            });
+        }
+        catch (error) {
+            console.log("Erreur API : ", error);
+        }
         
-    //     // Display all the first modal elements
-    //     modalTitle.innerHTML = "Galerie photo";
-    //     modal_works.style.display = "grid";
+        // Go back to the first modal
+        let arrow = document.querySelector(".fa-arrow-left");
+        let submit = document.querySelector(".valid, .green");
+        let addPhoto = document.querySelector(".add_photo");
+        let addTitle = document.querySelector(".add_title");
+        let categorie = document.querySelector(".add_categorie");
+        let section = document.querySelector(".modal_add_content");
+        let modalTitle = document.querySelector(".modal_gallery p");
+        let modal_works = document.querySelector(".modal_works");
 
-    //     console.log("Titre : ", title);
-    //     console.log("Catégorie : ", category);
+        // Add a gray line to separate the images and button
+        let grayLine = document.querySelector(".gray_line");
+        grayLine.insertAdjacentHTML("afterend", "<button class='add_picture'>Ajouter une photo</button>");
 
-    //     // Update the gallery and update the modal
-    //     getWorks();
-    //     addAllWorks(0);
-    //     updateModal();
+        // If there is an alert message, remove it
+        if (document.querySelector("#alert_file_size")) {
+            document.querySelector("#alert_file_size").remove();
+        }
 
-    //     // Re-add the event listener
-    //     addPictureEvents("addPictureButton");
-    // }
-    // else {
-    //     console.log("Veuillez remplir tous les champs.");
-    //     return;
-    // }
+        // Remove all the elements of the modal in "add picture" mode
+        arrow.remove();
+        submit.remove();
+
+        addPhoto.remove();
+        addTitle.remove();
+        categorie.remove();
+
+        section.remove();
+
+        // Update the gallery and update the modal
+        getWorks();
+        addAllWorks(0);
+        updateModal();
+
+        // Display all the first modal elements
+        modalTitle.innerHTML = "Galerie photo";
+        modal_works.style.display = "grid";
+
+        // Re-add the event listener
+        addPictureEvents("addPictureButton");
+    }
 }
 
 // Remove a work
-let removeWork = async (index, id) => {
+let removeWork = async (index) => {
     let data = response_data; // Create a copy of response_data
     const token = window.localStorage.getItem("token");
 
-    id = data[index].id;
-
-    console.log("index : ", index);
-    console.log("remove work. id : ", id);
+    // Get the id of the work to remove
+    let id = data[index].id;
 
     // Remove the work of the API and update the gallery
-    let work = await fetch(`http://localhost:5678/api/works/${id}`, {
+    await fetch(`http://localhost:5678/api/works/${id}`, {
         method: "DELETE",
         headers: {
             "Authorization": `Bearer ${token}`
