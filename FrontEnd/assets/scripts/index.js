@@ -541,6 +541,11 @@ let addPictureModal = () => {
         modal_works.style.display = "grid";
         grayLine.insertAdjacentHTML("afterend", "<button class='add_picture'>Ajouter une photo</button>");
 
+        // If there is an alert message, remove it
+        if (document.querySelector("#alert_file_size")) {
+            document.querySelector("#alert_file_size").remove();
+        }
+
         // Update the modal gallery with the new work added
         updateModal();
 
@@ -598,22 +603,15 @@ let addWork = async (title, category) => {
     formData.append("category", category);
     formData.append("userId", userId);
 
-    console.log(formData.get("id"));
-    console.log(formData.get("title"));
-    console.log(formData.get("image"));
-    console.log(formData.get("category"));
-    console.log(formData.get("userId"));
-
     // Set the maximum allowed file size in bytes
     const maxImageSize = 4 * 1024 * 1024; // 4 MB
 
     // Check if the file size exceeds the limit
     if (formData.get("image").size > maxImageSize) {
-        console.log('File size exceeds the allowed limit.');
-        return;
-    }
-    else {
-        console.log("File size is OK.");
+        if (!document.querySelector("#alert_file_size")) {
+            let validButton = document.querySelector(".valid, .green");
+            validButton.insertAdjacentHTML("afterend", `<p id='alert_file_size'>Veuillez choisir un fichier de 4Mo maximum.</p>`);
+        }
     }
 
     // If the image is filled, title is filled and category is selected
@@ -632,41 +630,50 @@ let addWork = async (title, category) => {
     //     catch (error) {
     //         console.log("Erreur API : ",error);
     //     }
+
+    //     // Go back to the first modal
+    //     let arrow = document.querySelector(".fa-arrow-left");
+    //     let submit = document.querySelector(".valid");
+    //     let addPhoto = document.querySelector(".add_photo");
+    //     let addTitle = document.querySelector(".add_title");
+    //     let categorie = document.querySelector(".add_categorie");
+    //     let section = document.querySelector(".modal_add_content");
+    //     let modalTitle = document.querySelector(".modal_gallery p");
+    //     let modal_works = document.querySelector(".modal_works");
+
+    //     // Add a gray line to separate the images and button
+    //     let grayLine = document.querySelector(".gray_line");
+    //     grayLine.insertAdjacentHTML("afterend", "<button class='add_picture'>Ajouter une photo</button>");
+
+    //     // Remove all the elements of the modal in "add picture" mode
+    //     arrow.remove();
+    //     submit.remove();
+
+    //     addPhoto.remove();
+    //     addTitle.remove();
+    //     categorie.remove();
+
+    //     section.remove();
         
+    //     // Display all the first modal elements
+    //     modalTitle.innerHTML = "Galerie photo";
+    //     modal_works.style.display = "grid";
+
     //     console.log("Titre : ", title);
     //     console.log("Catégorie : ", category);
 
-    //     // Update the gallery
+    //     // Update the gallery and update the modal
     //     getWorks();
     //     addAllWorks(0);
     //     updateModal();
+
+    //     // Re-add the event listener
+    //     addPictureEvents("addPictureButton");
     // }
     // else {
     //     console.log("Veuillez remplir tous les champs.");
     //     return;
     // }
-
-    // Add the work to the API and update the gallery
-    // try {
-    //     await fetch(`${url}works`, {
-    //         method: "POST",
-    //         headers: {
-    //             "Authorization": `Bearer ${token}`
-    //         },
-    //         body: formData
-    //     });
-    // }
-    // catch (error) {
-    //     console.log("Erreur API : ",error);
-    // }
-    
-    console.log("Titre : ", title);
-    console.log("Catégorie : ", category);
-
-    // Update the gallery and update the modal
-    getWorks();
-    addAllWorks(0);
-    updateModal();
 }
 
 // Remove a work
