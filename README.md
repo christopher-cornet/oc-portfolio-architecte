@@ -19,8 +19,6 @@ Web integrator project 6 code.
 
 ![image](https://github.com/christopher-cornet/oc-portfolio-architecte/assets/115154379/470d988d-5b85-4557-9b52-7a3a68400a67)
 
-<br>
-
 ### Login page
 
 ![image](https://github.com/christopher-cornet/oc-portfolio-architecte/assets/115154379/7b54b8e3-69ec-4f0c-b5a3-953c51861ab7)
