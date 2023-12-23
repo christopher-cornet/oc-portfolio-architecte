@@ -96,7 +96,7 @@ let changeCurrentCategory = (filter) => {
 }
 
 // Add all the categories buttons
-let addCategories = async () => {
+let addCategories = () => {
     let title = document.querySelector(".title");
     const categorieParent = document.createElement("div");
     categorieParent.classList.add("categories");
@@ -210,7 +210,8 @@ let userLogged = () => {
 let categoriesEvents = () => {
     let all_buttons = document.querySelectorAll(".categories button");
 
-    // Each button has an Event Listener. On click, call the filterWork function
+    // Each button has an Event Listener.
+    // On click, call the addAllWorks function with the index of the button in parameter
     for (let index = 0; index < all_buttons.length; index++) {
         // Add an event listener on all buttons
         all_buttons[index].addEventListener("click", () => {
