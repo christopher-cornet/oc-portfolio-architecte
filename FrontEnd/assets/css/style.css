@@ -421,6 +421,10 @@ a {
     color: black;
 }
 
+#introduction, #contact {
+	margin: 50px 0;
+}
+
 #introduction p {
 	margin-bottom: 1em;
 	max-width: 400px;
