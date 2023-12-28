@@ -12,7 +12,7 @@ let getWorks = async () => {
 }
 
 // Add all works to the gallery
-let addAllWorks = async (filter) => {
+let addAllWorks = (filter) => {
     removeAllWork(); // Remove all the precedent work
 
     let data = response_data; // Create a copy of response_data
