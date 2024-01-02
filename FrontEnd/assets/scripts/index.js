@@ -228,7 +228,7 @@ let loginEvents = () => {
     // If login button is equal to "login", redirect user to login page
     if (loginButton[2].innerHTML === "login") {
         loginButton[2].addEventListener("click", () => {
-            window.location.href = "http://localhost:5500/login.html";
+            window.location.href = "login.html";
         });
     }
     // Else, the login button is a logout button, so logout user
@@ -383,6 +383,8 @@ let addPictureModal = () => {
     let arrow = document.querySelector(".fa-arrow-left");
     let submit = document.querySelector(".valid");
 
+    submit.disabled = true;
+
     // Section containing the elements of the modal in "add picture" mode
     let section = document.createElement("section");
     section.classList.add("modal_add_content");
@@ -489,11 +491,13 @@ let addPictureModal = () => {
             // If all the fields are filled, change the submit button background color to green
             if (addPhotoInput.value.length > 0 && titleInput.value.length > 0 && categorieSelect.value !== "0") {
                 submit.classList.remove("valid");
+                submit.disabled = false;
                 submit.classList.add("green");
             }
             // Else, change the submit button background color to gray
             else if (addPhotoInput.value.length === 0 || titleInput.value.length === 0 || categorieSelect.value === "0") {
                 submit.classList.add("valid");
+                submit.disabled = true;
                 submit.classList.remove("green");
             }
         });

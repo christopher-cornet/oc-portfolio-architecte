@@ -24,7 +24,7 @@ let loginUser = async () => {
     if (data.token !== undefined && data.userId !== undefined) {
         window.localStorage.setItem("token", data.token);
         window.localStorage.setItem("id", data.userId);
-        window.location.href = "http://localhost:5500";
+        window.location.href = "index.html";
     }
     // Else, display error message
     else {
